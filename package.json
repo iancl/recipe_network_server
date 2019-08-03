@@ -1,0 +1,11 @@
+{
+  "name": "recipe_social_network",
+  "version": "1.0.0",
+  "description": "This is a social network where you can share recipes",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Ian Calderon",
+  "license": "MIT"
+}
