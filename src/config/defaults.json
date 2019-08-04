@@ -1,0 +1,24 @@
+{
+  "db": {
+    "url": "mongodb://127.0.0.1/auth"
+  },
+  "redis": {
+    "timeline": {
+      "url": ""
+    },
+    "cache": {
+      "url": ""
+    }
+  },
+  "log":{
+    "level": "debug"
+  },
+  "auth": {
+    "secret": "foo123",
+    "salt_rounds": 12,
+    "token_expiration": 3600000
+  },
+  "server": {
+    "port": 8080
+  }
+}
