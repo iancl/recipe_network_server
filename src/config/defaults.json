@@ -1,6 +1,6 @@
 {
   "db": {
-    "url": "mongodb://127.0.0.1/auth"
+    "url": "mongodb://127.0.0.1/recipes"
   },
   "redis": {
     "timeline": {
@@ -16,7 +16,7 @@
   "auth": {
     "secret": "foo123",
     "salt_rounds": 12,
-    "token_expiration": 3600000
+    "token_expiration": "1h"
   },
   "server": {
     "port": 8080

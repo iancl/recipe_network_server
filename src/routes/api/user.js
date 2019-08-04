@@ -1,49 +1,72 @@
 const { Router } = require('express');
-const passport = require('passport');
 
 module.exports = function (userController, logger) {
   let router = Router();
 
-  router.post('/register', async (req, res, next) => {
-    const dummyData = {
-      displayName: 'iqn',
-      fName: 'Ian',
-      lName: 'Calderon',
-      email: 'ianc@lderon.com',
-      photo: '10010101010101',
-      bio: 'this is my boring bio'
-    };
+  // TODO: create password policy
+  // find a valid format for the json
+  router.post('/register', async (req, res) => {
+    const body = req.body;
 
-    passport.authenticate('register', function(err, user, info) {
-      if (err) {
-        return next(err);
-      }
+    if (
+      !body.display_name ||
+      !body.f_name ||
+      !body.l_name ||
+      !body.email ||
+      !body.photo ||
+      !body.bio ||
+      !body.p
+    ) {
+      return res.responder.badRequest();
+    }
 
-      if (!user) {
-        console.log("-----------user not found");
-      }
+    let result;
 
-      if (info) {
-        console.log('+++++++++++++++++++++++++', info);
-      }
-
-      req.logIn(user, function(err) {
-        console.log('------------------------_________________________________-----------------------------');
-      });
-    })(req, res, next);
-
-
-    let response;
-
-    // not sure what to do here yet
     try {
-      response = userController.register(dummyData);
+      result = await userController.register(body);
     }
     catch (err) {
       logger.error(err);
+      return res
+        .responder
+        .error({ message: 'cannot create user , try again later' });
     }
 
-    res.responder.success(dummyData);
+    if (result) {
+      res.responder.created();
+    }
+    else {
+      res.responder.conflict({ message: 'user already exists' });
+    }
+  });
+
+  router.post('/login', async (req, res) => {
+    const body = req.body;
+
+    if (!body.e || !body.p) {
+      return res.responder.badRequest();
+    }
+
+    let token;
+
+    try {
+      token = await userController.login(body.e, body.p);
+    }
+    catch (err) {
+      logger.error(err);
+      return res
+        .responder
+        .error({ message: 'cannot login, try again later' });
+    }
+
+    if (token) {
+      res.responder.success({ token })
+    }
+    else {
+      res
+        .responder
+        .unauthorized({ message: 'username and password do not match' });
+    }
   });
 
   return router;

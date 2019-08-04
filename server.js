@@ -4,14 +4,10 @@ const config = require('./src/config')();
 const logger = require('./src/logger')(config.log);
 const app = express();
 
-const authentication = require('./src/authentication');
 const db = require('./src/db');
-const controllers = require('./src/controllers')(logger);
+const controllers = require('./src/controllers')(config, logger);
 const middleware = require('./src/middleware');
 const router = require('./src/routes');
-
-// setup passportjs
-authentication.setup();
 
 // init db
 db.init(config.db);

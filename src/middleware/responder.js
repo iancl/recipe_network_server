@@ -1,51 +1,50 @@
-function error(res, message = 'error occured') {
-  res
-    .status(500)
-    .json({
-      message
-    });
-}
 
-function notFound(res, message = 'resource not found') {
-  res
-    .status(404)
-    .json({
-      message
-    });
-}
+const defaultMessages = {
+  200: 'success',
+  201: 'created',
+  400: 'bad request',
+  401: 'unauthorized',
+  404: 'not found',
+  409: 'conflict',
+  500: 'error occurred'
+};
 
-function badRequest(res, message = 'bad request') {
+function respond(res, status, json = { message: defaultMessages[status] }) {
   res
-    .status(400)
-    .json({
-      message
-    });
-}
-
-function success(res, data = {message: 'success'}) {
-  res
-    .status(200)
-    .json(data)
+    .status(status)
+    .json(json)
 }
 
 module.exports = function () {
   return function (req, res, next) {
     const responder = {};
 
-    responder.notFound = function () {
-      notFound(res);
+    responder.notFound = function (json) {
+      respond(res, 404, json);
     };
 
-    responder.error = function (message) {
-      error(res, message);
+    responder.error = function (json) {
+      respond(res, 500, json);
     };
 
-    responder.success = function (data) {
-      success(res, data);
+    responder.success = function (json) {
+      respond(res, 200, json)
     };
 
-    responder.badRequest = function (message) {
-      badRequest(res, message);
+    responder.badRequest = function (json) {
+      respond(res, 400, json);
+    };
+
+    responder.created = function (json) {
+      respond(res, 201, json);
+    };
+
+    responder.conflict = function (json) {
+      respond(res, 409, json);
+    };
+
+    responder.unauthorized = function (json) {
+      respond(res, 401, json);
     };
 
     res.responder = responder;
