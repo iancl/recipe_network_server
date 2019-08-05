@@ -12,9 +12,10 @@ Notes:
 ##TODOS:
 ### JWT
 - add issuer and validate it
-- use certificates for jwt
-- use sha256 algorithm
 - issuer validation doesn't work
+- ~~use certificates for jwt~~
+- ~~use rsa256 algorithm~~
+
 
 ### security
 - implement password policy
