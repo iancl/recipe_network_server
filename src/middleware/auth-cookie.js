@@ -23,7 +23,7 @@ module.exports = function (config, logger) {
     try {
       // right now jwt is only validating secret and expiration
       decoded = await jwt
-        .validate(token, config.secret, {issuer: config.issuer});
+        .validate(token, config.publicKeyBuffer, {issuer: config.issuer});
     }
     catch (err) {
       logger.error(err);

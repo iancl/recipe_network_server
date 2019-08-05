@@ -14,7 +14,9 @@ module.exports = function () {
       saltRounds: process.env.SALT_ROUNDS || defaults.auth.salt_rounds,
       tokenExpiration: process.env.TOKEN_EXPIRATION || defaults.auth.token_expiration,
       cookieMaxAge: process.env.COOKIE_MAX_AGE || defaults.auth.cookie_max_age,
-      tokenIssuer: process.env.PROCESS_ISSUER || defaults.auth.token_issuer
+      tokenIssuer: process.env.PROCESS_ISSUER || defaults.auth.token_issuer,
+      privateKeyUrl: process.env.PRIVATE_KEY_URL || defaults.auth.private_key_url,
+      publicKeyUrl: process.env.PUBLIC_KEY_URL || defaults.auth.public_key_url
     },
     server: {
       port: process.env.PORT || defaults.server.port

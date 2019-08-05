@@ -63,8 +63,8 @@ module.exports = function (config, logger) {
 
     const token = jwt.createToken(
       { rsn: user._id, issuer: config.auth.tokenIssuer },
-      config.auth.secret,
-      { expiresIn: config.auth.tokenExpiration }
+      config.auth.privateKeyBuffer,
+      { expiresIn: config.auth.tokenExpiration, algorithm: 'RS256' }
     );
 
     logger.debug(`generated token for user ${user._id}`);

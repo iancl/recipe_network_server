@@ -2,7 +2,12 @@ const { Router } = require('express');
 const authMiddleware = require('../../middleware/auth-cookie');
 
 module.exports = function (config, userController, logger) {
-  let router = Router();
+  const router = Router();
+  const cookieOpts = {
+    httpOnly: true,
+    maxAge: config.auth.cookieMaxAge,
+    overwrite: true
+  };
 
   /**
    * It attempts to create a new user and store it in db
@@ -68,11 +73,13 @@ module.exports = function (config, userController, logger) {
 
     if (token) {
       res
-        .cookie('x-auth-token', token, { httpOnly: true, maxAge: config.auth.cookieMaxAge })
+        .cookie('x-auth-token', token, cookieOpts)
         .responder.success();
     }
     else {
+      // we wanna clear the cookie if the log
       res
+        .clearCookie('x-auth-token')
         .responder
         .unauthorized({ message: 'username and password do not match' });
     }
