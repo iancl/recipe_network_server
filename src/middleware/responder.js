@@ -23,6 +23,12 @@ function respond(res, status, json) {
     .json(json)
 }
 
+/**
+ * Creates an error json object and passes it to the respond function
+ * @param {expressResponse} res
+ * @param {Integer} status
+ * @param {Object} json
+ */
 function sendError(res, status, message) {
   const json = {
     code: status,
@@ -34,6 +40,12 @@ function sendError(res, status, message) {
   respond(res, status, json);
 }
 
+/**
+ * Creates an success json object and passes it to the respond function
+ * @param {expressResponse} res
+ * @param {Integer} status
+ * @param {Object} json
+ */
 function sendOk(res, status, message, data) {
   const json = {
     code: status,
