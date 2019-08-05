@@ -1,14 +1,18 @@
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const passport = require('passport');
 
-const requestEnder = require('./responder');
+const responder = require('./responder');
 
-module.exports.init = function (app, logger) {
+/**
+ * Initializes _some_ middleware modules
+ * @param {expressInstance} app
+ */
+module.exports.init = function (app) {
   app.use(helmet());
   app.use(morgan('combined'));
   app.use(bodyParser.json());
-  app.use(passport.initialize())
-  app.use(requestEnder());
+  app.use(cookieParser());
+  app.use(responder());
 };

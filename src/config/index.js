@@ -12,7 +12,9 @@ module.exports = function () {
     auth: {
       secret: process.env.AUTH_SECRET || defaults.auth.secret,
       saltRounds: process.env.SALT_ROUNDS || defaults.auth.salt_rounds,
-      tokenExpiration: process.env.TOKEN_EXPIRATION | defaults.auth.token_expiration
+      tokenExpiration: process.env.TOKEN_EXPIRATION || defaults.auth.token_expiration,
+      cookieMaxAge: process.env.COOKIE_MAX_AGE || defaults.auth.cookie_max_age,
+      tokenIssuer: process.env.PROCESS_ISSUER || defaults.auth.token_issuer
     },
     server: {
       port: process.env.PORT || defaults.server.port

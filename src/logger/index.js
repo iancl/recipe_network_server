@@ -1,6 +1,10 @@
 const winston = require('winston');
-
-
+/**
+ * Creates new logger
+ * @param {Object} config contains:
+ * - {String} level
+ * @returns {winston.Logger}
+ */
 module.exports = function (config) {
   const logger = winston.createLogger({
     level: config.level,

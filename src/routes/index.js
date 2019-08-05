@@ -1,13 +1,13 @@
 const { Router } = require('express');
 const api = require('./api');
 
-module.exports = function (controllers, logger) {
+module.exports = function (config, controllers, logger) {
   const router = Router();
 
   /**
    * API endpoint
    */
-  router.use('/api/v1', api(controllers, logger));
+  router.use('/api/v1', api(config, controllers, logger));
 
   /**
    * healthcheck route

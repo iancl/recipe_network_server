@@ -9,12 +9,23 @@ const defaultMessages = {
   500: 'error occurred'
 };
 
+/**
+ * Called by responder methods to respond to client.
+ * It basically just calls res.status(status).json(object) making use of the
+ * passed arguments.
+ * @param {expressResponse} res
+ * @param {Integer} status
+ * @param {Object} json
+ */
 function respond(res, status, json = { message: defaultMessages[status] }) {
   res
     .status(status)
     .json(json)
 }
 
+/**
+ * Adds method to res object that is used to respond to client.
+ */
 module.exports = function () {
   return function (req, res, next) {
     const responder = {};

@@ -1,22 +1,23 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const jwt = require('jsonwebtoken');
-
-function createToken(data, secret, opts) {
-  return new Promise((resolve, reject) => {
-    jwt.sign(data, secret, opts, (err, token) => {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(token);
-    });
-  });
-}
+const jwt = require('../utils/jwt');
 
 module.exports = function (config, logger) {
   const self = {};
 
+  /**
+   * Creates a new user and stores it in DB
+   * It doesn't log in user
+   * @param {Object} data extracted from request body and contains:
+   * - {String} display_name
+   * - {String} f_name
+   * - {String} l_name
+   * - {String} email
+   * - {Binary} photo
+   * - {String} bio
+   * - {String} password
+   * @returns {Boolean} true if user was created successfully.
+   */
   self.register = async function (data) {
     let user = await User.findOne({ email: data.email });
 
@@ -41,11 +42,12 @@ module.exports = function (config, logger) {
     return true;
   };
 
-
-  // TODO:
-  //  - find what's the best jwt token to use cause a string might not be
-  //    the best option
-  //  - find whats a good signing algorithm
+  /**
+   * Issues a new token if the credentials are correct.
+   * @param {String} email
+   * @param {String} password
+   * @returns {String} token or null
+   */
   self.login = async function (email, password) {
     let user = await User.findOne({ email });
 
@@ -59,15 +61,15 @@ module.exports = function (config, logger) {
       return null;
     }
 
-    const token = createToken(
-      { rsn: user._id },
+    const token = jwt.createToken(
+      { rsn: user._id, issuer: config.auth.tokenIssuer },
       config.auth.secret,
       { expiresIn: config.auth.tokenExpiration }
     );
 
     logger.debug(`generated token for user ${user._id}`);
 
-    return token
+    return token;
   };
 
   return self

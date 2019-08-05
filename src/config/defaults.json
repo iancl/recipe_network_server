@@ -16,7 +16,9 @@
   "auth": {
     "secret": "foo123",
     "salt_rounds": 12,
-    "token_expiration": "1h"
+    "token_expiration": "1h",
+    "token_issuer": "recipenetwork",
+    "cookie_max_age": 3600000
   },
   "server": {
     "port": 8080

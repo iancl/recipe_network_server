@@ -1,10 +1,11 @@
 const { Router } = require('express');
 
-module.exports = function (userController, logger) {
+module.exports = function (config, userController, logger) {
   let router = Router();
 
-  // TODO: create password policy
-  // find a valid format for the json
+  /**
+   * It attempts to create a new user and store it in db
+   */
   router.post('/register', async (req, res) => {
     const body = req.body;
 
@@ -40,6 +41,11 @@ module.exports = function (userController, logger) {
     }
   });
 
+
+  /**
+   * Logs in user by issuing a new token which will be passed as httpOnly cookie
+   * It will replace existing token if it exists
+   */
   router.post('/login', async (req, res) => {
     const body = req.body;
 
@@ -60,7 +66,9 @@ module.exports = function (userController, logger) {
     }
 
     if (token) {
-      res.responder.success({ token })
+      res
+        .cookie('x-auth-token', token, { httpOnly: true, maxAge: config.auth.cookieMaxAge })
+        .responder.success();
     }
     else {
       res
