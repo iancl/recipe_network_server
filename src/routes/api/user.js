@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const authMiddleware = require('../../middleware/auth-cookie');
 
 module.exports = function (config, userController, logger) {
   let router = Router();
@@ -75,6 +76,22 @@ module.exports = function (config, userController, logger) {
         .responder
         .unauthorized({ message: 'username and password do not match' });
     }
+  });
+
+  /**
+   * returns data about current user
+   * *Request must contain valid token*
+   */
+  router.get('/me', authMiddleware(config.auth, logger), (req, res) => {
+    const user = {
+      display_name: req.user.display_name,
+      bio: req.user.bio,
+      f_name: req.user.f_name,
+      l_name: req.user.l_name,
+      email: req.user.email,
+    };
+
+    res.responder.success('success', user);
   });
 
   return router;
