@@ -21,4 +21,4 @@ Notes:
 - add security agains xss
 
 ### json
-- find decent format for response
+- ~~find decent format for response~~

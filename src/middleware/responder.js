@@ -17,10 +17,34 @@ const defaultMessages = {
  * @param {Integer} status
  * @param {Object} json
  */
-function respond(res, status, json = { message: defaultMessages[status] }) {
+function respond(res, status, json) {
   res
     .status(status)
     .json(json)
+}
+
+function sendError(res, status, message) {
+  const json = {
+    code: status,
+    error: {
+      message: message || defaultMessages[status]
+    }
+  };
+
+  respond(res, status, json);
+}
+
+function sendOk(res, status, message, data) {
+  const json = {
+    code: status,
+    message: message || defaultMessages[status]
+  };
+
+  if (data) {
+    json.data = data;
+  }
+
+  respond(res, status, json);
 }
 
 /**
@@ -30,32 +54,32 @@ module.exports = function () {
   return function (req, res, next) {
     const responder = {};
 
-    responder.notFound = function (json) {
-      respond(res, 404, json);
-    };
-
-    responder.error = function (json) {
-      respond(res, 500, json);
-    };
-
-    responder.success = function (json) {
-      respond(res, 200, json)
-    };
-
     responder.badRequest = function (json) {
-      respond(res, 400, json);
+      sendError(res, 400, message);
     };
 
-    responder.created = function (json) {
-      respond(res, 201, json);
+    responder.created = function (message, data) {
+      sendOk(res, 201, message, data);
     };
 
-    responder.conflict = function (json) {
-      respond(res, 409, json);
+    responder.conflict = function (message) {
+      sendError(res, 409, message);
     };
 
-    responder.unauthorized = function (json) {
-      respond(res, 401, json);
+    responder.error = function (message) {
+      sendError(res, 500, message);
+    };
+
+    responder.notFound = function (message) {
+      sendError(res, 404, message);
+    };
+
+    responder.success = function (message, data) {
+      sendOk(res, 200, message, data)
+    };
+
+    responder.unauthorized = function (message) {
+      sendError(res, 401, message);
     };
 
     res.responder = responder;
