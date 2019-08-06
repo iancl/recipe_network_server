@@ -26,7 +26,7 @@ module.exports = function (config, logger) {
     catch (err) {
       logger.error(err);
       res.clearCookie('x-auth-token');
-      return res.responder.unauthorized({ message: 'invalid token'});
+      return res.responder.unauthorized('invalid token');
     }
 
     let user;
@@ -35,7 +35,7 @@ module.exports = function (config, logger) {
     }
     catch (err) {
       logger.error(err);
-      res.responder.error({ message: 'cannot fullfill request at this moment' });
+      res.responder.error('cannot fullfill request at this moment');
     }
 
     req.user = user;

@@ -66,7 +66,7 @@ module.exports = function () {
   return function (req, res, next) {
     const responder = {};
 
-    responder.badRequest = function (json) {
+    responder.badRequest = function (message) {
       sendError(res, 400, message);
     };
 

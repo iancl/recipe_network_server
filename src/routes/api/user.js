@@ -34,14 +34,14 @@ module.exports = function (config, userController, logger) {
       logger.error(err);
       return res
         .responder
-        .error({ message: 'cannot create user , try again later' });
+        .error('cannot create user , try again later');
     }
 
     if (result) {
       res.responder.created();
     }
     else {
-      res.responder.conflict({ message: 'user already exists' });
+      res.responder.conflict('user already exists' );
     }
   });
 
@@ -63,7 +63,7 @@ module.exports = function (config, userController, logger) {
       logger.error(err);
       return res
         .responder
-        .error({ message: 'cannot login, try again later' });
+        .error('cannot login, try again later');
     }
 
     if (token) {
@@ -76,7 +76,7 @@ module.exports = function (config, userController, logger) {
       res
         .clearCookie('x-auth-token')
         .responder
-        .unauthorized({ message: 'username and password do not match' });
+        .unauthorized('username and password do not match');
     }
   });
 
