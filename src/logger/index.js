@@ -16,7 +16,6 @@ module.exports = function (config) {
       winston.format.simple()
     )
   });
-
   return logger;
 };
 

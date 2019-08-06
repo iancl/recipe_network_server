@@ -7,5 +7,6 @@ const mongoose = require('mongoose');
  * @returns {Promise} that resolves to client
  */
 module.exports.init = function (config) {
+  mongoose.set('useCreateIndex', true);
   return mongoose.connect(config.url, { useNewUrlParser: true });
 };

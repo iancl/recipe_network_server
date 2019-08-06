@@ -1,6 +1,4 @@
 const { Router } = require('express');
-const authMiddleware = require('../../middleware/auth-cookie');
-
 const user = require('./user');
 
 module.exports = function (config, controllers, logger) {
@@ -10,6 +8,5 @@ module.exports = function (config, controllers, logger) {
    * api/user routes
    */
   router.use('/user', user(config, controllers.user, logger));
-
   return router;
 };

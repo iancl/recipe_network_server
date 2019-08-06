@@ -14,7 +14,6 @@ module.exports = function (config, userController, logger) {
    */
   router.post('/register', async (req, res) => {
     const body = req.body;
-
     if (
       !body.display_name ||
       !body.f_name ||
@@ -28,7 +27,6 @@ module.exports = function (config, userController, logger) {
     }
 
     let result;
-
     try {
       result = await userController.register(body);
     }
@@ -53,16 +51,13 @@ module.exports = function (config, userController, logger) {
    * It will replace existing token if it exists
    */
   router.post('/login', async (req, res) => {
-    const body = req.body;
-
-    if (!body.e || !body.p) {
+    if (!req.body.e || !req.body.p) {
       return res.responder.badRequest();
     }
 
     let token;
-
     try {
-      token = await userController.login(body.e, body.p);
+      token = await userController.login(req.body.e, req.body.p);
     }
     catch (err) {
       logger.error(err);

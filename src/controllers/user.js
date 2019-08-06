@@ -20,7 +20,6 @@ module.exports = function (config, logger) {
    */
   self.register = async function (data) {
     let user = await User.findOne({ email: data.email });
-
     if (user) {
       logger.debug(`user ${user._id} already exists`);
       return false;
@@ -50,13 +49,11 @@ module.exports = function (config, logger) {
    */
   self.login = async function (email, password) {
     let user = await User.findOne({ email });
-
     if (!user) {
       return null;
     }
 
     const match = await bcrypt.compare(password, user.password);
-
     if (!match) {
       return null;
     }

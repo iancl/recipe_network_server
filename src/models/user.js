@@ -4,7 +4,10 @@ const userSchema = new Schema({
   display_name: String,
   f_name: String,
   l_name: String,
-  email: String,
+  email: {
+    type: String,
+    unique: true
+  },
   photo: Buffer,
   bio: String,
   friends: Array,

@@ -95,7 +95,6 @@ module.exports = function () {
     };
 
     res.responder = responder;
-
     next();
   }
 };

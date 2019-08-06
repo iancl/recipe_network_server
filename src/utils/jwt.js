@@ -13,7 +13,6 @@ module.exports.createToken = function (data, secret, opts) {
       if (err) {
         return reject(err);
       }
-
       resolve(token);
     });
   });
@@ -32,7 +31,6 @@ module.exports.validate = function (token, secret) {
       if (err) {
         return reject(err);
       }
-
       resolve(decoded);
     });
   });

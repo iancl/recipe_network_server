@@ -13,13 +13,11 @@ const User = require('../models/user');
 module.exports = function (config, logger) {
   return async function (req, res, next) {
     const token = req.cookies['x-auth-token'];
-
     if (!token) {
       return res.responder.unauthorized();
     }
 
     let decoded;
-
     try {
       // right now jwt is only validating secret and expiration
       decoded = await jwt
@@ -32,7 +30,6 @@ module.exports = function (config, logger) {
     }
 
     let user;
-
     try {
       user = await User.findOne({ _id: decoded.rsn });
     }
